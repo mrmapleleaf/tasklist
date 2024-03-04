@@ -1,0 +1,11 @@
+<template>
+  <header>
+    <h1>ヘッダーですよ</h1>
+  </header>
+  <main>
+    <slot></slot>
+  </main>
+  <footer>
+    <h1>フッターですよ</h1>
+  </footer>
+</template>

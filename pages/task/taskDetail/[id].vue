@@ -1,25 +1,6 @@
 <template>
   <h1>タスク詳細画面ですよ</h1>
-  <div>
-    <table>
-      <tr>
-        <th>やること</th>
-        <td>AAA</td>
-      </tr>
-      <tr>
-        <th>いつまでに</th>
-        <td>BBB</td>
-      </tr>
-      <tr>
-        <th>作成日</th>
-        <td>CCC</td>
-      </tr>
-      <tr>
-        <th>更新日</th>
-        <td>DDD</td>
-      </tr>
-    </table>
-  </div>
+  <taskDetailContainer></taskDetailContainer>
   <NuxtLink v-bind:to="{name: 'task-taskList'}">戻る</NuxtLink>
 </template>
 

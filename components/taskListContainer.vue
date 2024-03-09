@@ -17,6 +17,6 @@ const taskList = useState<Map<number, task>>('taskList');
 
 <style scoped>
   .item {
-    padding: 10px;
+    padding: 5px 10px 20px 10px;
   }
 </style>

@@ -3,37 +3,69 @@
     <table>
       <tr>
         <th>ID</th>
-        <td>{{ task?.id }}</td>
+        <td>{{ taskDetail?.id }}</td>
       </tr>
       <tr>
         <th>タイトル</th>
-        <td>{{ task?.title }}</td>
+        <td>{{ taskDetail?.title }}</td>
       </tr>
       <tr>
         <th>詳細</th>
-        <td>{{ task?.detail }}</td>
+        <td>{{ taskDetail?.detail }}</td>
       </tr>
       <tr>
-        <th>備考</th>
-        <td>{{ task?.note }}</td>
+        <th>作成日時</th>
+        <td>{{ formatedCreatedAt }}</td>
+      </tr>
+      <tr>
+        <th>更新日時</th>
+        <td>{{ formatedUpdatedAt }}</td>
       </tr>
       <tr>
         <th>ステータス</th>
-        <td>{{ taskStatus }}</td>
+        <td>{{ taskDetail?.completed }}</td>
       </tr>
     </table>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { task } from '~/interfaces';
-// routeパラメータをgetに渡すように変更する
-const taskList = useState<Map<number, task>>('taskList');
-const task = taskList.value.get(1);
+const pending = ref(false);
+const taskDetail = ref();
+const route = useRoute();
 
-const taskStatus = computed(
-  (): string => {
-    return task?.completed ? '完了済み' : '未完了'
+onBeforeMount(() => {
+  getTaskdetail(route);
+});
+
+const formatedCreatedAt = computed(() => {
+  if (taskDetail.value && taskDetail.value.created_at) {
+    return formatDate(taskDetail.value.created_at);
   }
-)
+  return '';
+});
+
+const formatedUpdatedAt = computed(() => {
+  if (taskDetail.value && taskDetail.value.updated_at) {
+    return formatDate(taskDetail.value.updated_at);
+  }
+  return '';
+});
+
+const getTaskdetail = async (route: any) => {
+  pending.value = true;
+  try {
+    taskDetail.value = await $fetch(
+      'http://localhost:8080/task/detail/' + `${route.params.id}`
+    );
+  } catch (e) {
+    console.error('APIの呼び出しでエラーが発生しました', e);
+  } finally {
+    pending.value = false;
+  }
+};
+
+const formatDate = (dateTime: string) => {
+  return dateTime.replace('T', ' ');
+};
 </script>

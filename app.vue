@@ -4,14 +4,7 @@
   </NuxtLayout>
 </template>
 
-<script setup lang="ts">
-import type { task } from './interfaces';
-import { createTaskList } from './server/taskDB';
-
-useState<Map<number, task>>('taskList', (): Map<number, task> => {
-  return createTaskList();
-});
-</script>
+<script setup lang="ts"></script>
 
 <style>
 main {

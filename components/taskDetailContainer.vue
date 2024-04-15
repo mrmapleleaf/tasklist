@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="taskDetail">
     <table>
       <tr>
         <th>ID</th>
@@ -23,9 +23,11 @@
       </tr>
       <tr>
         <th>ステータス</th>
-        <td>{{ taskDetail?.completed }}</td>
+        <td>{{ formatedStatus }}</td>
       </tr>
     </table>
+    <br />
+    <button v-on:click="changeTaskStatus()">このタスクを完了！</button>
   </div>
 </template>
 
@@ -34,20 +36,27 @@ const pending = ref(false);
 const taskDetail = ref();
 const route = useRoute();
 
-onBeforeMount(() => {
+onMounted(() => {
   getTaskdetail(route);
 });
 
 const formatedCreatedAt = computed(() => {
-  if (taskDetail.value && taskDetail.value.created_at) {
+  if (taskDetail.value?.created_at) {
     return formatDate(taskDetail.value.created_at);
   }
   return '';
 });
 
 const formatedUpdatedAt = computed(() => {
-  if (taskDetail.value && taskDetail.value.updated_at) {
+  if (taskDetail.value?.updated_at) {
     return formatDate(taskDetail.value.updated_at);
+  }
+  return '';
+});
+
+const formatedStatus = computed(() => {
+  if (taskDetail.value.completed !== undefined) {
+    return taskDetail.value.completed ? '完了' : '未完了';
   }
   return '';
 });
@@ -67,5 +76,14 @@ const getTaskdetail = async (route: any) => {
 
 const formatDate = (dateTime: string) => {
   return dateTime.replace('T', ' ');
+};
+
+const changeTaskStatus = () => {
+  let flg = window.confirm('このタスクのステータスを変更しますか？');
+  if (flg) {
+    console.log('変更！');
+  } else {
+    console.log('未変更！');
+  }
 };
 </script>
